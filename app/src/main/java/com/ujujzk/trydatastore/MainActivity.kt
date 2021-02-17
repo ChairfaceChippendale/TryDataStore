@@ -3,6 +3,7 @@ package com.ujujzk.trydatastore
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.datastore.createDataStore
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val store = createDataStore(
             fileName = "auth.pb",
             serializer = AuthSerializer()
@@ -25,7 +25,10 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
 
             store.updateData {
-                it.toBuilder().setAuthToken("Hello Auth").setRefreshToken("Hello Refresh").build()
+                it.toBuilder()
+                    .setAuthToken("Hello Auth")
+                    .setRefreshToken("Hello Refresh")
+                    .build()
             }
 
             store.data
@@ -39,12 +42,17 @@ class MainActivity : AppCompatActivity() {
                     Log.e("FFF", "${it.authToken} ${it.refreshToken}")
                 }
 
+        }
 
-
-            store.updateData {
-                it.toBuilder().setAuthToken("Hello Auth").setRefreshToken("Hello Refresh").build()
+        findViewById<View>(R.id.ffff).setOnClickListener {
+            lifecycleScope.launch {
+                store.updateData {
+                    it.toBuilder()
+                        .setAuthToken("Goodbye Auth")
+                        .setRefreshToken("Goodbye Refresh")
+                        .build()
+                }
             }
-
         }
 
     }
